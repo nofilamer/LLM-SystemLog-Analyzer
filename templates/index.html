@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syslog Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Syslog Analyzer</h1>
+        <button id="analyzeButton">Start Analysis</button>
+        <div id="loading" style="display: none;">🔄 Analyzing logs, please wait...</div>
+        
+        <table id="resultsTable">
+            <thead>
+                <tr>
+                    <th>Issue Name</th>
+                    <th>Analysis</th>
+                    <th>Severity</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById("analyzeButton").addEventListener("click", function() {
+            document.getElementById("loading").style.display = "block";
+            fetch("/analyze", { method: "POST" })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("loading").style.display = "none";
+                let tableBody = document.querySelector("#resultsTable tbody");
+                tableBody.innerHTML = "";
+                
+                if (data.error) {
+                    tableBody.innerHTML = `<tr><td colspan="3">${data.error}</td></tr>`;
+                } else {
+                    data.forEach(row => {
+                        let tr = document.createElement("tr");
+                        let severityClass = row["Severity"].toLowerCase();
+                        tr.innerHTML = `<td>${row["Issue Name"]}</td>
+                                        <td>${row["Analysis"]}</td>
+                                        <td class="${severityClass}">${row["Severity"]}</td>`;
+                        tableBody.appendChild(tr);
+                    });
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+</body>
+</html>
+

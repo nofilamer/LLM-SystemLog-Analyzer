@@ -1,0 +1,109 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    background: linear-gradient(to right, #74ebd5, #acb6e5); /* Gradient background */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Container for the Syslog Analyzer */
+.container {
+    width: 80%;
+    max-width: 1000px;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    margin-top: 30px;
+    transition: 0.3s ease-in-out;
+}
+
+h1 {
+    color: #333;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* Stylish Button */
+button {
+    padding: 12px 25px;
+    font-size: 18px;
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Table Styling */
+#resultsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#resultsTable th, #resultsTable td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+    font-size: 16px;
+}
+
+th {
+    background: #007bff;
+    color: white;
+}
+
+/* Severity Color Coding */
+.critical {
+    background-color: #ff4c4c; /* Red */
+    color: white;
+    font-weight: bold;
+}
+
+.warning {
+    background-color: #ffcc00; /* Yellow */
+    color: black;
+    font-weight: bold;
+}
+
+.informational {
+    background-color: #4caf50; /* Green */
+    color: white;
+    font-weight: bold;
+}
+
+/* Stylish Loading Indicator */
+#loading {
+    font-size: 18px;
+    color: #333;
+    margin-top: 10px;
+    font-weight: bold;
+    animation: fadeIn 0.5s ease-in-out infinite alternate;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0.5;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
