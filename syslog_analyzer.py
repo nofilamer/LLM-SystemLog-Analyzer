@@ -54,7 +54,7 @@ Example format:
 1. **Critical: Kernel Panic Detected**: Details about the kernel panic...
 2. **Warning: Repeated Authentication Failures**: Analysis of failed logins...
 3. **Informational: System Updates Applied**: Details about updates...
-"""}, 
+"""},
                 {"role": "user", "content": "\n".join(logs)}
             ],
             max_tokens=800
@@ -84,7 +84,7 @@ def parse_analysis_to_table(analysis_text):
     severities = []
 
     # Regex to match the structured format: number, bold title, colon, description
-    pattern = r"\d+\.\s+\*\*(.*?)\*\*:\s*(.*?)(?=\n\d+\.|\Z)"  
+    pattern = r"\d+\.\s+\*\*(.*?)\*\*:\s*(.*?)(?=\n\d+\.|\Z)"
     matches = re.findall(pattern, analysis_text, re.DOTALL)
 
     for match in matches:
@@ -118,7 +118,7 @@ def index():
 def analyze():
     log_file = "/var/log/syslog"
     logs = read_last_n_lines(log_file, 1000)
-    
+
     if logs:
         analysis = analyze_logs_with_openai(logs)
         if analysis:
@@ -131,4 +131,3 @@ def analyze():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001, debug=True)
-

@@ -1,0 +1,79 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #333;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#resultsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+}
+
+#resultsTable th, #resultsTable td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background: #007bff;
+    color: white;
+}
+
+/* Severity Color Coding */
+.critical {
+    background-color: #ff4c4c; /* Red */
+    color: white;
+    font-weight: bold;
+}
+
+.warning {
+    background-color: #ffcc00; /* Yellow */
+    color: black;
+    font-weight: bold;
+}
+
+.informational {
+    background-color: #4caf50; /* Green */
+    color: white;
+    font-weight: bold;
+}
+
+#loading {
+    font-size: 18px;
+    color: #333;
+    margin-top: 10px;
+}
+
