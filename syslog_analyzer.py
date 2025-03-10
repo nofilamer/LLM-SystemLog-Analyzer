@@ -37,7 +37,24 @@ def analyze_logs_with_openai(logs):
         response = client.chat.completions.create(
             model="gpt-4-turbo",
             messages=[
-                {"role": "system", "content": "You are a system log analyst. Identify any unusual patterns, errors, or security threats. Format your response as a list of issues, each with a title and detailed analysis."},
+                {"role": "system", "content": """You are an expert system log analyst. Analyze the provided syslog entries to identify unusual patterns, errors, and security threats.
+
+INSTRUCTIONS:
+1. Structure your response STRICTLY as a numbered list of issues.
+2. For each issue, format as: "**{ISSUE TITLE}**: {DETAILED ANALYSIS}"
+3. Always use the same format with a number, followed by bold issue title, colon, then analysis.
+4. Each issue must have a clear, concise title that describes the problem.
+5. Categorize issues by severity in your titles using terms like:
+   - Critical: for system failures, crashes, corruption
+   - Warning: for errors, timeouts, repeated issues
+   - Informational: for routine activities
+6. Limit your response to 5-7 most important issues.
+
+Example format:
+1. **Critical: Kernel Panic Detected**: Details about the kernel panic...
+2. **Warning: Repeated Authentication Failures**: Analysis of failed logins...
+3. **Informational: System Updates Applied**: Details about updates...
+"""}, 
                 {"role": "user", "content": "\n".join(logs)}
             ],
             max_tokens=800
@@ -66,15 +83,22 @@ def parse_analysis_to_table(analysis_text):
     descriptions = []
     severities = []
 
-    # Updated regex to match each issue separately
-    pattern = r"\d+\.\s\*\*(.*?)\*\*\s*[:-]?\s*(.*?)(?=\n\d+\.|\Z)"  
+    # Regex to match the structured format: number, bold title, colon, description
+    pattern = r"\d+\.\s+\*\*(.*?)\*\*:\s*(.*?)(?=\n\d+\.|\Z)"  
     matches = re.findall(pattern, analysis_text, re.DOTALL)
 
     for match in matches:
         issue_name, description = match
-        severity = categorize_severity(issue_name)
+        # Extract severity from the issue name (now should be in format "Severity: Issue")
+        if ":" in issue_name:
+            severity_part, issue_part = issue_name.split(":", 1)
+            severity = severity_part.strip()
+            issue_title = issue_part.strip()
+        else:
+            severity = categorize_severity(issue_name)
+            issue_title = issue_name.strip()
 
-        issues.append(issue_name.strip())  # Extract issue title
+        issues.append(issue_title)  # Extract issue title
         descriptions.append(description.strip())  # Extract details
         severities.append(severity)  # Assign severity level
 
@@ -106,5 +130,5 @@ def analyze():
         return jsonify({"error": "No logs found or error reading the file."})
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5001, debug=True)
 
